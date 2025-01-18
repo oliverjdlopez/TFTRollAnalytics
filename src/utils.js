@@ -15,12 +15,14 @@ const l10 = [5, 10, 20, 40, 25]
 const odds = [l1, l2, l3, l4, l5, l6, l7, l8, l9, l10]
 
 
-const oneCostNames = ["Ahri", "Caitlyn", "Cho'Gath", "Darius", "Garen", "Jax", "Kha'Zix", "Kobuko", "Kog'Maw", "Malphite", "Rek'Sai", "Sivir", "Yasuo"]
-const twoCostNames = ["Aatrox", "Gnar", "Janna", "Kindred", "Lux", "Neeko", "Qiyana", "Riven", "Senna", "Shen", "Teemo", "Yorick", "Zyra"]
-const threeCostNames = ["Alune", "Amumu", "Aphelios", "Bard", "Diana", "Illaoi", "Soraka", "Tahm Kench", "Thresh", "Tristana", "Volibear", "Yone", "Zoe"]
-const fourCostNames = ["Annie", "Ashe", "Galio", "Kai'sa", "Kayn", "Lee Sin", "Lillia", "Morgana", "Nautilus", "Ornn", "Sylas", "Syndra"]
-const fiveCostNames = ["Azir", "Hwei", "Irelia", "Lissandra", "Rakan", "Sett", "Udyr", "Wukong", "Xayah"]
-const allNames = [...oneCostNames, ...twoCostNames, ...threeCostNames, ...fourCostNames, ...fiveCostNames]
+const oneCostNames = ["Amumu", "Darius", "Draven", "Irelia", "Lux", "Maddie", "Morgana", "Powder", "Singed", "Steb", "Trundle", "Vex", "Violet", "Zyra"]
+const twoCostNames = ["Akali", "Camille", "Leona", "Nocturne", "Rell", "Renata Glasc", "Sett", "Tristana", "Urgot", "Vander", "Vladimir", "Zeri", "Ziggs"]
+const threeCostNames = ["Blitzcrank", "Cassiopeia", "Ezreal", "Gangplank", "Kog'Maw", "Loris", "Nami", "Nunu & Willump", "Renni", "Scar", "Smeech", "Swain", "Twisted Fate"]
+const fourCostNames = ["Ambessa", "Corki", "Dr. Mundo", "Ekko", "Elise", "Garen", "Heimerdinger", "Illaoi", "Silco", "Twitch", "Vi", "Zoe"]
+const fiveCostNames = ["Caitlyn", "Jayce", "Jinx", "LeBlanc", "Malzahar", "Morderkaiser", "Rumble", "Sevika"]
+
+const sixCostNames = ["Mel", "Viktor", "Warwick"]
+const allNames = [...oneCostNames, ...twoCostNames, ...threeCostNames, ...fourCostNames, ...fiveCostNames, ...sixCostNames]
 
 
 
@@ -29,11 +31,12 @@ const twoCosts =  Object.fromEntries(twoCostNames.map(x=>[x, 2]))
 const threeCosts = Object.fromEntries(threeCostNames.map(x=>[x, 3]))
 const fourCosts = Object.fromEntries(fourCostNames.map(x=>[x, 4]))
 const fiveCosts = Object.fromEntries(fiveCostNames.map(x=>[x, 5]))
+const sixCosts = Object.fromEntries(sixCostNames.map(x=>[x,5]))
 
-const costMappings ={...oneCosts, ...twoCosts, ...threeCosts, ...fourCosts, ...fiveCosts}
+const costMappings ={...oneCosts, ...twoCosts, ...threeCosts, ...fourCosts, ...fiveCosts, ...sixCosts}
 
-const bag = [30, 25, 18, 10, 9] //number of duplicates of the same unit given a cost
-const nUnique = [13, 13, 13, 12, 8] //number of unique units within a given cost
+const bag = [30, 25, 18, 10, 9, 9] //number of duplicates of the same unit given a cost
+const nUnique = [14, 13, 13, 12, 8, 3] //number of unique units within a given cost
 
 
 //all below functions are abstractions for intuitive data fetching
@@ -59,4 +62,4 @@ function nameToCost(name){
 
 
 export {allNames, levelOdds, poolSize, bagSize, nUniqueCost, nameToCost, COSTS,
-    oneCostNames, twoCostNames, threeCostNames, fourCostNames, fiveCostNames}
+    oneCostNames, twoCostNames, threeCostNames, fourCostNames, fiveCostNames, sixCostNames}
