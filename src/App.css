@@ -1,38 +1,112 @@
+/* General Reset */
+body {
+  font-size: 16px;
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #f7f9fc; /* Light gray-blue */
+  border-bottom: 1px solid #e0e0e0; /* Subtle border */
+  color: #333; /* Dark gray for text */
+}
+
+div {
+  margin: 5px;
+}
+
+/* App Container */
 .App {
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff; /* White background for content */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  border-radius: 8px; /* Rounded corners */
+  border: 1px solid #e0e0e0; /* Subtle border */
+  text-align: left;
+}
+
+/* Header */
+header {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  color: #1a73e8; /* Blue accent */
+}
+
+/* Description */
+.App > div:first-of-type {
+  font-size: 16px;
+  line-height: 1.6;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Input Section */
+label {
+  margin-right: 10px;
+  color: #555;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+input[type="number"] {
+  margin-bottom: 5px;
+  padding: 2px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 40px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+input[type="number"]:focus {
+  outline: none;
+  border-color: #1a73e8;
+  box-shadow: 0 0 5px rgba(26, 115, 232, 0.4);
+}
+
+/* Sections */
+
+.NameInputs, .OobNonTargetInputs, .OobTargetInputs {
+  margin: 30px;
+  display:flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.Buttons, .TheChart {
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.inputDescription {
+  font-weight: bold;
+}
+
+.GameStateInputs {
+  margin: 30px;
+}
+
+
+.OobNonTargetInputs{
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+
+
+button {
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin: 10px;
+}
+
+button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+/* Chart */
+.TheChart {
+  text-align: center;
 }
