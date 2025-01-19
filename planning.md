@@ -21,6 +21,7 @@
 ## Higher priority:
 1. Make sure that name updates don't violate invariants
 2. no dupe inputs
+3. consider how to 6 costs
 3. valid inputs (level min/max, non-neg gold)
 4. typing for things ()
 3. unique key prop error in oobTargetIputs

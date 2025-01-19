@@ -7,6 +7,7 @@ function handleNameUpdate(e, i, cfg, setCfg){
     const newEnum = {}
     if (isUnitName && isNewName) { //only accept valid names that aren't already inputs
         newEnum[e.target.value] = i
+        cfg.oobTarget[e.target.value] = 0;
     }
         for (const [name, num] of Object.entries(cfg.targetNameEnum)) {
             if (num !== i) {// keep all other inputs the same

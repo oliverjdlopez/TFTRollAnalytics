@@ -36,6 +36,7 @@ header {
   font-size: 16px;
   line-height: 1.6;
   text-align: center;
+  margin: 20px 0px;
 }
 
 /* Input Section */
@@ -45,7 +46,7 @@ label {
 }
 
 input[type="number"] {
-  margin-bottom: 5px;
+  margin-bottom: 20px;
   padding: 2px;
   font-size: 14px;
   border: 1px solid #ccc;
@@ -59,36 +60,30 @@ input[type="number"]:focus {
   box-shadow: 0 0 5px rgba(26, 115, 232, 0.4);
 }
 
+.inputDescription {
+  font-weight:bold;
+}
+
 /* Sections */
 
-.NameInputs, .OobNonTargetInputs, .OobTargetInputs {
+.NameInputs, .OobNonTargetInputs, .OobTargetInputs, .GameStateInputs {
   margin: 30px;
   display:flex;
   justify-content: center;
+}
+
+
+.OobNonTargetInputs, .OobTargetInputs, .GameStateInputs{
+  gap: 8px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0;
+
 }
 
 .Buttons, .TheChart {
   padding: 10px;
   border-bottom: 1px solid #e0e0e0;
 }
-
-.inputDescription {
-  font-weight: bold;
-}
-
-.GameStateInputs {
-  margin: 30px;
-}
-
-
-.OobNonTargetInputs{
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 20px;
-}
-
-
 
 button {
   background-color: #007BFF;

@@ -38,6 +38,7 @@ export default function App() {
                onChange={(e) => setCfg({...cfg, nTargets: Number(e.target.value)})}/>
 
     </div> */
+
     const inputSlider = <div></div> //not using this for now
     return (
         <div className="App">
@@ -47,9 +48,12 @@ export default function App() {
             </div>
 
             {inputSlider}
-
             <div className={"inputDescription"}>
-                Which units are you rolling for?
+            Enter your parameters:
+            </div>
+            <GameStateInputs cfg={cfg} setCfg={setCfg}/>
+            <div className={"inputDescription"}>
+                Enter the units you're rolling for:
             </div>
             <NameInputs cfg={cfg} setCfg={setCfg}
                         className="NameInputs"/>
@@ -57,16 +61,14 @@ export default function App() {
 
             <OobTargetInputs cfg={cfg} setCfg={setCfg}/>
             <div className={"inputDescription"}>
-                How many units are out of the pool (not inluding the ones you're rolling for)?
+                Enter how many OTHER units are out of the bag:
             </div>
-
             <OobNonTargetInputs cfg={cfg} setCfg={setCfg}/>
 
-            <GameStateInputs cfg={cfg} setCfg={setCfg}/>
 
             <button onClick={() => handleSimulate(cfg, setResults)}> Simulate</button>
             <button onClick={() => handleClear(initCfg, setCfg, setResults)}> Clear</button>
-            <TheChart results={results} className="TheChart"/>
+            <TheChart results={results}/>
 
             {/*<TheStats probabilities={results.probabilities} className="TheStats"/>*/}
         </div>
@@ -75,10 +77,11 @@ export default function App() {
 
  function GameStateInputs({cfg, setCfg}) {
      return <div className={"GameStateInputs"}>
+
      <label htmlFor={"level"} className={"gameStateInput"}> Level</label>
         <input type={"number"} min={0} max={10} value={cfg.level}
                onChange={(e) => setCfg({...cfg, level: Number(e.target.value)})}/>
-        <label htmlFor={"Gold"} className={"gameStateInput"}> Gold spent</label>
+        <label htmlFor={"Gold"} className={"gameStateInput"}> Gold</label>
         <input type={"number"} min={0} value={cfg.gold}
                onChange={(e) => setCfg({...cfg, gold: Number(e.target.value)})}/>
     </div>
