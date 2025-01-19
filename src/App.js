@@ -6,7 +6,7 @@ import TheStats from "./TheStats.tsx";
 
 import {handleNameUpdate, handleOobTargetUpdate, handleSimulate, handleClear,
     handleAddTarget, handleOobNonTargetUpdate} from "./handlers";
-import {allNames, COSTS, nameToCost} from "./utils.js";
+import {allNames, bagSize, COSTS, nameToCost, poolSize} from "./utils.js";
 import RolldownSimSimpleTests from "./RolldownSimSimpleTests";
 import AppSimpleTests from "./AppSimpleTests";
 import ChartSimpleTests from "./ChartSimpleTests"
@@ -110,7 +110,7 @@ function OobTargetInputs({cfg, setCfg}) {
                 {targetNames.map(name => ((name !== 'Null unit') &&
                     <div className={"OobTargetInput"}>
                         <label htmlFor={name}> How many {name} are out of the bag?</label>
-                        <input id={name} min={0} type={"number"} value={cfg.oobTarget[name]}
+                        <input id={name} min={0} max={bagSize(name)} type={"number"} value={cfg.oobTarget[name]}
                                onChange={(e) => handleOobTargetUpdate(e, name, cfg, setCfg)}/>
                     </div>))}
 
@@ -123,7 +123,7 @@ function OobNonTargetInputs({cfg, setCfg}) {
         {costStrings.map(cost =>
                 <div key={cost} className={"OobNonTargetInput"}>
                     <label htmlFor={cost}> {cost} costs?</label>
-                    <input key={cost} min={0} type={"number"} value={cfg.oobNonTarget[cost]}
+                    <input key={cost} min={0} max={poolSize(cost)} type={"number"} value={cfg.oobNonTarget[cost]}
                            onChange={(e) => handleOobNonTargetUpdate(e, cost, cfg, setCfg)}/>
                 </div>)}
     </div>

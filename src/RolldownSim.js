@@ -44,25 +44,22 @@ export default class RolldownSim {
     // Tests to make sure that inputs are within game confines. Returns bool
     validInputs(cfg) {
         // check game state inputs
-        const validCost = this.cost >= 1 && cfg.cost <= 5
         const validLevel = cfg.level >= 1 && cfg.level <= 10
         const validGold = cfg.gold >= 0
-        const validGameState = validCost && validGold && validLevel
+        const validGameState = validGold && validLevel
 
         // unit inputs
         const validOobUnit = []
         for (let name of Object.keys(cfg.targetNameEnum)){
-            validOobUnit.push(cfg.oobUnit >= 0 && cfg.oobUnit <= bagSize(cfg.cost))
+            validOobUnit.push(cfg.oobUnit >= 0 && cfg.oobUnit <= bagSize(cfg.cost)) // can only be as many units out of the bag as there are units in the bag
         }
 
         const maxOobCost = bagSize(cfg.cost) * nUniqueCost(cfg.cost) - cfg.oobUnit
         const validOobCost = (cfg.oobCost >= 0) && (cfg.oobCost <= maxOobCost)
 
 
-        // Object.values().forEach(value => {if (!value){notFilled=true}}) // return empty results if any inputs are empty, not sure if I need this but might when null inputs
-                // return validCost && validLevel && validOobUnit && validOobCost && validShops
 
-        //TODO: remimplement actual logic
+
         return true
     }
 
