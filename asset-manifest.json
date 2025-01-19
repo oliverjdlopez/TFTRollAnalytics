@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/TFTRollAnalytics/static/css/main.b4bd24cd.css",
+    "main.js": "/TFTRollAnalytics/static/js/main.08872ae4.js",
+    "static/js/364.23e3f488.chunk.js": "/TFTRollAnalytics/static/js/364.23e3f488.chunk.js",
+    "static/js/787.6b6a6705.chunk.js": "/TFTRollAnalytics/static/js/787.6b6a6705.chunk.js",
+    "index.html": "/TFTRollAnalytics/index.html",
+    "main.b4bd24cd.css.map": "/TFTRollAnalytics/static/css/main.b4bd24cd.css.map",
+    "main.08872ae4.js.map": "/TFTRollAnalytics/static/js/main.08872ae4.js.map",
+    "364.23e3f488.chunk.js.map": "/TFTRollAnalytics/static/js/364.23e3f488.chunk.js.map",
+    "787.6b6a6705.chunk.js.map": "/TFTRollAnalytics/static/js/787.6b6a6705.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b4bd24cd.css",
+    "static/js/main.08872ae4.js"
+  ]
+}
