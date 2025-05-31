@@ -1,5 +1,5 @@
 import RolldownSim from "./RolldownSim";
-import {allNames} from "./utils.js";
+import {allNames} from "./utilsSet13.js";
 
 function handleNameUpdate(e, i, cfg, setCfg){
     const isUnitName = (allNames.includes(e.target.value))

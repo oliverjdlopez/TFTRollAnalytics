@@ -6,7 +6,7 @@ import TheStats from "./TheStats.tsx";
 
 import {handleNameUpdate, handleOobTargetUpdate, handleSimulate, handleClear,
     handleAddTarget, handleOobNonTargetUpdate, handleProbTypeUpdate} from "./handlers";
-import {allNames, bagSize, COSTS, nameToCost, poolSize} from "./utils.js";
+import {allNames, bagSize, COSTS, nameToCost, poolSize} from "./utilsSet14.js";
 import RolldownSimSimpleTests from "./RolldownSimSimpleTests";
 import AppSimpleTests from "./AppSimpleTests";
 import ChartSimpleTests from "./ChartSimpleTests"
@@ -69,8 +69,14 @@ export default function App() {
             </div>
             <OobNonTargetInputs cfg={cfg} setCfg={setCfg}/>
 
-            <input type="checkbox" id="useCumProbs" checked={cfg.useCumProbs}
+          <div className={"inputDescription"}>
+                Options:
+                <div style={{ justifyContent: "center", display: "flex", flexDirection: "row"}}> 
+                    Use cumulative probabilities: <input type="checkbox" id="useCumProbs" checked={cfg.useCumProbs}
                    onChange={(e) => handleProbTypeUpdate(cfg, sim, setCfg, setResults)}/>
+            </div>
+            </div>
+
             <button onClick={() => handleSimulate(cfg, setResults, setSim)}> Simulate</button>
             <button onClick={() => handleClear(initCfg, setCfg, setResults)}> Clear</button>
             <TheChart cfg={cfg} results={results}/>
