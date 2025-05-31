@@ -5,7 +5,7 @@ import RolldownSim from "./RolldownSim";
 import TheStats from "./TheStats.tsx";
 
 import {handleNameUpdate, handleOobTargetUpdate, handleSimulate, handleClear,
-    handleAddTarget, handleOobNonTargetUpdate, handleProbTypeUpdate} from "./handlers";
+    handleAddTarget, handleOobNonTargetUpdate, handleProbTypeUpdate, handleNSimsUpdate} from "./handlers";
 import {allNames, bagSize, COSTS, nameToCost, poolSize} from "./utilsSet14.js";
 import RolldownSimSimpleTests from "./RolldownSimSimpleTests";
 import AppSimpleTests from "./AppSimpleTests";
@@ -72,6 +72,15 @@ export default function App() {
           <div className={"inputDescription"}>
                 Options:
                 <div style={{ justifyContent: "center", display: "flex", flexDirection: "row"}}> 
+                    Number of simulations: <select value={cfg.nSims} onChange={(e) => handleNSimsUpdate(e, cfg, setCfg)}> 
+                        <option value={10000}>10,000</option>
+                        <option value={50000}>50,000</option>
+                        <option value={100000}>100,000</option>
+                        <option value={500000}>500,000</option>
+                        </select>
+
+
+
                     Use cumulative probabilities: <input type="checkbox" id="useCumProbs" checked={cfg.useCumProbs}
                    onChange={(e) => handleProbTypeUpdate(cfg, sim, setCfg, setResults)}/>
             </div>

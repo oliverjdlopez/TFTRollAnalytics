@@ -1,7 +1,7 @@
 import RolldownSim from "./RolldownSim";
 import {allNames} from "./utilsSet13.js";
 
-function handleNameUpdate(e, i, cfg, setCfg){
+export function handleNameUpdate(e, i, cfg, setCfg){
     const isUnitName = (allNames.includes(e.target.value))
     const isNewName = !(Object.keys(cfg.targetNameEnum).includes(e.target.value))
     const newEnum = {}
@@ -18,10 +18,10 @@ function handleNameUpdate(e, i, cfg, setCfg){
 
 }
 
-function handleAddTarget(cfg, setCfg){
+export function handleAddTarget(cfg, setCfg){
     setCfg({...cfg, nTargets: (cfg.nTargets+1) })
 }
-function handleSimulate(cfg, setResults, setSim){
+export function handleSimulate(cfg, setResults, setSim){
     console.log(cfg)
     let sim = new RolldownSim(cfg)
     sim.runAllSims()
@@ -29,23 +29,24 @@ function handleSimulate(cfg, setResults, setSim){
     setResults(sim.getResults())
 }
 
-function handleClear(initCfg, setCfg, setResults){
+export function handleNSimsUpdate(e, cfg, setCfg) {
+        setCfg({...cfg, nSims: Number(e.target.value)}) //invert value on checkbox change
+}
+
+export function handleClear(initCfg, setCfg, setResults){
     setCfg(initCfg)
     setResults({})
 }
 
-function handleProbTypeUpdate(cfg, sim, setCfg, setResults) {
+export function handleProbTypeUpdate(cfg, sim, setCfg, setResults) {
     setCfg({...cfg, useCumProbs: !cfg.useCumProbs}) //invert value on checkbox change
 }
-function handleOobTargetUpdate(e, name, cfg, setCfg) {
+export function handleOobTargetUpdate(e, name, cfg, setCfg) {
     const newOobTarget = {...cfg.oobTarget, [name]: Number(e.target.value)}
     setCfg({...cfg, oobTarget: newOobTarget})
 }
 
-function handleOobNonTargetUpdate(e, cost, cfg, setCfg){
+export function handleOobNonTargetUpdate(e, cost, cfg, setCfg){
     const newOobNonTarget = {...cfg.oobNonTarget, [cost]: Number(e.target.value)}
     setCfg({...cfg, oobNonTarget: newOobNonTarget})
 }
-
-
-export {handleOobNonTargetUpdate, handleAddTarget, handleNameUpdate, handleSimulate, handleClear, handleOobTargetUpdate, handleProbTypeUpdate}
