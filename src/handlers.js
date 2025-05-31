@@ -21,21 +21,22 @@ function handleNameUpdate(e, i, cfg, setCfg){
 function handleAddTarget(cfg, setCfg){
     setCfg({...cfg, nTargets: (cfg.nTargets+1) })
 }
-function handleSimulate(cfg, setResults){
+function handleSimulate(cfg, setResults, setSim){
     console.log(cfg)
-    let rollSim = new RolldownSim(cfg)
-    rollSim.runAllSims()
-    setResults(rollSim.getResults())
-
+    let sim = new RolldownSim(cfg)
+    sim.runAllSims()
+    setSim(sim)
+    setResults(sim.getResults())
 }
-
 
 function handleClear(initCfg, setCfg, setResults){
     setCfg(initCfg)
     setResults({})
 }
 
-
+function handleProbTypeUpdate(cfg, sim, setCfg, setResults) {
+    setCfg({...cfg, useCumProbs: !cfg.useCumProbs}) //invert value on checkbox change
+}
 function handleOobTargetUpdate(e, name, cfg, setCfg) {
     const newOobTarget = {...cfg.oobTarget, [name]: Number(e.target.value)}
     setCfg({...cfg, oobTarget: newOobTarget})
@@ -47,4 +48,4 @@ function handleOobNonTargetUpdate(e, cost, cfg, setCfg){
 }
 
 
-export {handleOobNonTargetUpdate, handleAddTarget, handleNameUpdate, handleSimulate, handleClear, handleOobTargetUpdate}
+export {handleOobNonTargetUpdate, handleAddTarget, handleNameUpdate, handleSimulate, handleClear, handleOobTargetUpdate, handleProbTypeUpdate}

@@ -5,7 +5,7 @@ import RolldownSim from "./RolldownSim";
 import TheStats from "./TheStats.tsx";
 
 import {handleNameUpdate, handleOobTargetUpdate, handleSimulate, handleClear,
-    handleAddTarget, handleOobNonTargetUpdate} from "./handlers";
+    handleAddTarget, handleOobNonTargetUpdate, handleProbTypeUpdate} from "./handlers";
 import {allNames, bagSize, COSTS, nameToCost, poolSize} from "./utils.js";
 import RolldownSimSimpleTests from "./RolldownSimSimpleTests";
 import AppSimpleTests from "./AppSimpleTests";
@@ -20,8 +20,11 @@ const nSims = 100000
 const targetNameEnum = {'Null unit': 0}//targetNames.i is user's i-th desired unit. '': 0 represents no data, it is there to keep state controlled
 const oobNonTarget = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0} // oobNonTarget.cost is number of nonTargets costs are out of the pool
 const oobTarget = {'Null unit': 0} // oobTarget.name is the number of target unit that is out of the pool
+const useCumProbs = false;
+
+
 const initCfg = {level: 6, gold: 20, nTargets: 3, nSims: nSims, targetNameEnum: targetNameEnum,
-    oobNonTarget: oobNonTarget, oobTarget: oobTarget}
+    useCumProbs: useCumProbs, oobNonTarget: oobNonTarget, oobTarget: oobTarget}
 
 //RolldownSimSimpleTests()
 //AppSimpleTests()
@@ -30,7 +33,8 @@ const initCfg = {level: 6, gold: 20, nTargets: 3, nSims: nSims, targetNameEnum: 
 
 export default function App() {
     const [cfg, setCfg] = useState(initCfg) //e.g. level, shops, etc, set by button changes
-    const [results, setResults] = useState({})
+    const [sim, setSim] = useState(null) //the simulation object, which contains the results of the simulation
+    const [results, setResults] = useState({}) //the results to graph, could be standard, cumulative, with bool conditions, etc.
     /* TODO: figure out if I want to keep this
     const inputSlider = <div>
         <label htmlFor={"nTargets"}> How many units are you rolling for? </label>
@@ -65,10 +69,11 @@ export default function App() {
             </div>
             <OobNonTargetInputs cfg={cfg} setCfg={setCfg}/>
 
-
-            <button onClick={() => handleSimulate(cfg, setResults)}> Simulate</button>
+            <input type="checkbox" id="useCumProbs" checked={cfg.useCumProbs}
+                   onChange={(e) => handleProbTypeUpdate(cfg, sim, setCfg, setResults)}/>
+            <button onClick={() => handleSimulate(cfg, setResults, setSim)}> Simulate</button>
             <button onClick={() => handleClear(initCfg, setCfg, setResults)}> Clear</button>
-            <TheChart results={results}/>
+            <TheChart cfg={cfg} results={results}/>
 
             {/*<TheStats probabilities={results.probabilities} className="TheStats"/>*/}
         </div>

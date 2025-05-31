@@ -30,6 +30,7 @@ export default class RolldownSim {
             this.initBags = {...this.bags} // for easier resetting later
             this.sims = new Array(this.nSims)
             this.probs = {}
+            this.cumProbs = {}
             this.targetNames.forEach(name => this.probs[name] = new Array(10).fill(0))
         } else {
             this.handleInvalidInputs(cfg)
@@ -225,11 +226,21 @@ export default class RolldownSim {
             this.probs[name] = this.probs[name].map(n => n/this.nSims)
         }
 
+        // make cumulative probabilities from normalized probabilities
+        for (let name of this.targetNames) {
+            this.cumProbs[name] = this.probs[name].reduce((acc, curr, i) => {
+                const sum = (acc[i - 1] || 0) + curr;
+                acc.push(sum);
+                return acc
+            }, [])
+        }
+
     }
 
     //might seem unnecessary, but I think will eventually be helpful in the future for passing info along
     getResults(){
         return {"probs": this.probs,
+                "cumProbs": this.cumProbs,
                 "sims": this.sims}
 
 

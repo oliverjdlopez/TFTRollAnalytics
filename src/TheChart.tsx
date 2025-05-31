@@ -96,11 +96,12 @@ function makeChartData(probabilities){
 
 function makeChart(results){
 
-    return <Bar options={options} data={makeChartData(results["probs"])} className={"TheChart"}/>;
+    return <Bar options={options} data={makeChartData(results)} className={"TheChart"}/>;
 
 }
 
-export default function TheChart({results}) {
+export default function TheChart({cfg, results}) {
+    console.log(results)
     if (Object.keys(results).length === 0){
         return makeNullChart()
     }
