@@ -65,47 +65,38 @@ const labels = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
 const colors = ['rgba(255, 0, 0, 0.5)', 'rgba(0, 0, 255, 0.5)', 'rgba(0, 255, 0, 0.5)', 'rgba(0, 0, 0, 0.5)']
 
-function makeNullChart() {
-    const nullData = {
-        labels,
-        datasets: [
-            {
-                data: labels.map((x) => 0),
-                backgroundColor: 'rgba(255, 99, 132, 0.5)',
-            },
-        ],
-    };
-    return <Bar options={options} data={nullData} className={"TheChart"}/>;
-}
+const nullData = { //empty chart data
+    labels,
+    datasets: [
+        {
+            data: labels.map((x) => 0),
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        },
+    ],
+};
 
 
+export default function TheChart({cfg, results}) {
 
+    if (Object.keys(results).length === 0){ // return blank chart if no results (i.e. sim not run yet)
+        return <Bar options={options} data={nullData} className={"TheChart"}/>
+    }
 
-
-function makeChartData(probabilities){
-        const ds = (Object.keys(probabilities)).map((k, i)=>
+    else { 
+        const probabilities = cfg.useCumProbs ? results.cumProbs : results.probs;
+        const unitData = (Object.keys(probabilities)).map((k, i)=> // create a dataset for each unit name
             ({
                 label: k,
                 data: probabilities[k],
                 backgroundColor: colors[i]
             }))
-        return {labels: labels,
+        const chartData = { // if no data, return empty dataset
+            labels: labels, // labels are nums from 0 to 9
+            datasets: unitData // each entry in chart data is unit name and corresponding probabilities
+        } 
 
-            datasets: ds}
-    }
+        return <Bar options={options} data={chartData} className={"TheChart"}/>
+    
+        }
 
-function makeChart(results){
-
-    return <Bar options={options} data={makeChartData(results)} className={"TheChart"}/>;
-
-}
-
-export default function TheChart({cfg, results}) {
-    console.log(results)
-    if (Object.keys(results).length === 0){
-        return makeNullChart()
-    }
-    else {
-        return makeChart(results);
-    }
-    }
+    }  
