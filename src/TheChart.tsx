@@ -1,5 +1,5 @@
 import {Bar} from 'react-chartjs-2'
-import "./utilsSet13.js"
+import "./utilsSet14.js"
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -66,14 +66,9 @@ const labels = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 const colors = ['rgba(255, 0, 0, 0.5)', 'rgba(0, 0, 255, 0.5)', 'rgba(0, 255, 0, 0.5)', 'rgba(0, 0, 0, 0.5)']
 
 const nullData = { //empty chart data
-    labels,
-    datasets: [
-        {
-            data: labels.map((x) => 0),
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        },
-    ],
-};
+    labels: labels,
+    datasets:[], 
+}
 
 
 export default function TheChart({cfg, results}) {
