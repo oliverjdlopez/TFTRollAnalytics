@@ -6,8 +6,8 @@ export function handleNameUpdate(e, i, cfg, setCfg){
     const isNewName = !(Object.keys(cfg.targetNameEnum).includes(e.target.value))
     const newEnum = {}
     if (isUnitName && isNewName) { //only accept valid names that aren't already inputs
-        newEnum[e.target.value] = i
-        cfg.oobTarget[e.target.value] = 0;
+        newEnum[e.target.value] = i // add entry 
+        cfg.oobTarget[e.target.value] = 0; 
     }
         for (const [name, num] of Object.entries(cfg.targetNameEnum)) {
             if (num !== i) {// keep all other inputs the same
@@ -30,6 +30,7 @@ export function handleSimulate(cfg, setResults, setSim){
 }
 
 export function handleNSimsUpdate(e, cfg, setCfg) {
+    console.log(e.target.value)
         setCfg({...cfg, nSims: Number(e.target.value)}) //invert value on checkbox change
 }
 

@@ -17,7 +17,7 @@ import Dropdown from "react-bootstrap/Dropdown"
 
 const maxUnits = 3
 const nSims = 100000
-const targetNameEnum = {'Null unit': 0}//targetNames.i is user's i-th desired unit. '': 0 represents no data, it is there to keep state controlled
+const targetNameEnum = {'Null unit': 0}//targetNames.i is user's i-th desired unit. 
 const oobNonTarget = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0} // oobNonTarget.cost is number of nonTargets costs are out of the pool
 const oobTarget = {'Null unit': 0} // oobTarget.name is the number of target unit that is out of the pool
 const useCumProbs = false;
@@ -35,6 +35,10 @@ export default function App() {
     const [cfg, setCfg] = useState(initCfg) //e.g. level, shops, etc, set by button changes
     const [sim, setSim] = useState(null) //the simulation object, which contains the results of the simulation
     const [results, setResults] = useState({}) //the results to graph, could be standard, cumulative, with bool conditions, etc.
+    const [conditions, setConditions] = useState([[""]]) //boolean conditions for filtering
+    // const
+    
+    
     /* TODO: figure out if I want to keep this
     const inputSlider = <div>
         <label htmlFor={"nTargets"}> How many units are you rolling for? </label>
@@ -73,10 +77,10 @@ export default function App() {
                 Options:
                 <div style={{ justifyContent: "center", display: "flex", flexDirection: "row"}}> 
                     Number of simulations: <select value={cfg.nSims} onChange={(e) => handleNSimsUpdate(e, cfg, setCfg)}> 
-                        <option value={10000}>10,000</option>
-                        <option value={50000}>50,000</option>
-                        <option value={100000}>100,000</option>
-                        <option value={500000}>500,000</option>
+                        <option value={10000}>Low</option>
+                        <option value={50000}>Medium</option>
+                        <option value={100000}>High</option>
+                        <option value={500000}>Very high (~0 variance)</option>
                         </select>
 
 
@@ -86,8 +90,15 @@ export default function App() {
             </div>
             </div>
 
+            <BooleanConditionsInput conditions={conditions} setConditions={setConditions}/>
+            
+            
+            
             <button onClick={() => handleSimulate(cfg, setResults, setSim)}> Simulate</button>
             <button onClick={() => handleClear(initCfg, setCfg, setResults)}> Clear</button>
+            
+            
+            
             <TheChart cfg={cfg} results={results}/>
 
             {/*<TheStats probabilities={results.probabilities} className="TheStats"/>*/}
@@ -127,7 +138,7 @@ function OobTargetInputs({cfg, setCfg}) {
 
         const targetNames = Object.keys(cfg.targetNameEnum)
         return <div className={"OobTargetInputs"}>
-                {targetNames.map(name => ((name !== 'Null unit') &&
+                {targetNames.map(name => ((name !== 'Null unit') && // make out of bag input for any non-null unit
                     <div className={"OobTargetInput"}>
                         <label htmlFor={name}> How many {name} are out of the bag?</label>
                         <input id={name} min={0} max={bagSize(name)} type={"number"} value={cfg.oobTarget[name]}
@@ -148,4 +159,67 @@ function OobNonTargetInputs({cfg, setCfg}) {
                 </div>)}
     </div>
 
+}
+
+
+function BooleanConditionsInput({conditions, setConditions}) {
+    // Add a new OR group
+    const addCondition = () => setConditions([...conditions, [""]]);
+    // Add a unit to a group (AND)
+    const addUnitInput = (groupIdx) => {
+        const newConditions = conditions.map((group, i) =>
+            i === groupIdx ? [...group, ""] : group
+        );
+        setConditions(newConditions);
+    };
+
+    const updateUnitInput = (groupIdx, unitIdx, value) => {
+        if (allNames.includes(value)){ // only update if the value is a valid unit name
+            const newConditions = conditions.map((group, i) =>
+                i === groupIdx
+                    ? group.map((unit, j) => (j === unitIdx ? value : unit))
+                    : group
+            );
+            setConditions(newConditions);
+        };
+    };
+
+    const removeUnitInput = (groupIdx, unitIdx) => {
+        const newConditions = conditions.map((group, i) =>
+            i === groupIdx
+                ? group.filter((_, j) => j !== unitIdx)
+                : group
+        );
+        setConditions(newConditions);
+    };
+    // Remove entire condition input
+    const removeCondition = (groupIdx) => {
+        setConditions(conditions.filter((_, i) => i !== groupIdx));
+    };
+
+    return (
+        <div>
+            <div><b>Boolean Conditions:</b></div>
+            {conditions.map((group, groupIdx) => (
+                <div key={groupIdx} style={{marginBottom: 8, border: "1px solid #ccc", padding: 4}}>
+                    <span>Group {groupIdx + 1} (AND): </span>
+                    {group.map((unit, unitIdx) => (
+                        <span key={unitIdx}>
+                            <input
+                                type="text"
+                                value={unit}
+                                placeholder="Unit name"
+                                onChange={e => updateUnitInput(groupIdx, unitIdx, e.target.value)}
+                                style={{marginRight: 4}}
+                            />
+                            <button onClick={() => removeUnitInput(groupIdx, unitIdx)}>-</button>
+                        </span>
+                    ))}
+                    <button onClick={() => addUnitInput(groupIdx)}>+ Unit (AND)</button>
+                    <button onClick={() => removeCondition(groupIdx)} style={{marginLeft: 8}}>Remove Group</button>
+                </div>
+            ))}
+            <button onClick={addCondition}>+ Group (OR)</button>
+        </div>
+    );
 }
