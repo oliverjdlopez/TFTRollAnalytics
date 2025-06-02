@@ -1,20 +1,14 @@
 import RolldownSim from "./RolldownSim";
 import {allNames} from "./utilsSet14.js";
 
-export function handleNameUpdate(e, i, cfg, setCfg){
-    const isUnitName = (allNames.includes(e.target.value))
-    const isNewName = !(Object.keys(cfg.targetNameEnum).includes(e.target.value))
-    const newEnum = {}
+export function handleNameUpdate(e, cfg, setCfg){
+    const name = e.target.value
+    const isUnitName = (allNames.includes(name))
+    const isNewName = !(cfg.targetNames.includes(name))
     if (isUnitName && isNewName) { //only accept valid names that aren't already inputs
-        newEnum[e.target.value] = i // add entry 
-        cfg.oobTarget[e.target.value] = 0; 
+        cfg.targetNames.push(name)
+        setCfg({...cfg, targetNames: cfg.targetNames})
     }
-        for (const [name, num] of Object.entries(cfg.targetNameEnum)) {
-            if (num !== i) {// keep all other inputs the same
-                newEnum[name] = num
-            }
-        }
-        setCfg({...cfg, targetNameEnum: newEnum})
 
 }
 

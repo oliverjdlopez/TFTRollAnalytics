@@ -17,13 +17,13 @@ import Dropdown from "react-bootstrap/Dropdown"
 
 const maxUnits = 3
 const nSims = 100000
-const targetNameEnum = {'Null unit': 0}//targetNames.i is user's i-th desired unit. 
+const targetNames = ['Null unit']//targetNames.i is user's i-th desired unit.
 const oobNonTarget = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0} // oobNonTarget.cost is number of nonTargets costs are out of the pool
 const oobTarget = {'Null unit': 0} // oobTarget.name is the number of target unit that is out of the pool
 const useCumProbs = false;
 
 
-const initCfg = {level: 6, gold: 20, nTargets: 3, nSims: nSims, targetNameEnum: targetNameEnum,
+const initCfg = {level: 6, gold: 20, nTargets: 3, nSims: nSims, targetNames: targetNames,
     useCumProbs: useCumProbs, oobNonTarget: oobNonTarget, oobTarget: oobTarget}
 
 //RolldownSimSimpleTests()
@@ -63,11 +63,11 @@ export default function App() {
             <div className={"inputDescription"}>
                 Enter the units you're rolling for:
             </div>
-            <NameInputs cfg={cfg} setCfg={setCfg}
-                        className="NameInputs"/>
+            <ConditionInputs cfg={cfg} setCfg={setCfg} conditions={conditions} setConditions={setConditions}/>
 
 
-            <OobTargetInputs cfg={cfg} setCfg={setCfg}/>
+
+            <OobTargetInputs cfg={cfg} setCfg={setCfg} conditions={conditions}/>
             <div className={"inputDescription"}>
                 Enter how many OTHER units are out of the bag:
             </div>
@@ -90,8 +90,7 @@ export default function App() {
             </div>
             </div>
 
-            <BooleanConditionsInput conditions={conditions} setConditions={setConditions}/>
-            
+
             
             
             <button onClick={() => handleSimulate(cfg, setResults, setSim)}> Simulate</button>
@@ -118,27 +117,19 @@ export default function App() {
     </div>
 }
 
- function NameInputs({cfg, setCfg}) {
-     const nameInputs = []
-     for (let i = 1; i <= cfg.nTargets; i++) {
-         nameInputs.push(<div key={"NameInput " + i} className={"NameInput"}>
-             <input type="text" list="unit-name-list" onChange={(e) => handleNameUpdate(e, i, cfg, setCfg)}/>
-             <datalist id="unit-name-list">
-                 {allNames.map(name => <option key={name} value={name}></option>)}
-             </datalist>
-         </div>)
-     }
-     return <div className={"NameInputs"}>
-        {nameInputs}
-    </div>
-}
 
 
-function OobTargetInputs({cfg, setCfg}) {
 
-        const targetNames = Object.keys(cfg.targetNameEnum)
-        return <div className={"OobTargetInputs"}>
-                {targetNames.map(name => ((name !== 'Null unit') && // make out of bag input for any non-null unit
+
+function OobTargetInputs({cfg, setCfg, conditions}) {
+
+    const allInputs = conditions.flat()
+    const allValidNames = allInputs.filter(name => allNames.includes(name))
+    const targetNames = [...new Set(allValidNames)];
+    console.log(targetNames)
+
+    return <div className={"OobTargetInputs"}>
+                {targetNames.map(name => ( // make out of bag input for any non-null unit
                     <div className={"OobTargetInput"}>
                         <label htmlFor={name}> How many {name} are out of the bag?</label>
                         <input id={name} min={0} max={bagSize(name)} type={"number"} value={cfg.oobTarget[name]}
@@ -148,6 +139,8 @@ function OobTargetInputs({cfg, setCfg}) {
         </div>
 }
 
+
+// TODO: make costs appear adaptively as units are added so that it's explanatory for user
 function OobNonTargetInputs({cfg, setCfg}) {
     const costStrings = COSTS.map(cost => String(cost))
     return <div className={"OobNonTargetInputs"}>
@@ -162,7 +155,9 @@ function OobNonTargetInputs({cfg, setCfg}) {
 }
 
 
-function BooleanConditionsInput({conditions, setConditions}) {
+
+//TODO: refactor handlers
+function ConditionInputs({cfg, setCfg, conditions, setConditions}) {
     // Add a new OR group
     const addCondition = () => setConditions([...conditions, [""]]);
     // Add a unit to a group (AND)
@@ -174,14 +169,13 @@ function BooleanConditionsInput({conditions, setConditions}) {
     };
 
     const updateUnitInput = (groupIdx, unitIdx, value) => {
-        if (allNames.includes(value)){ // only update if the value is a valid unit name
             const newConditions = conditions.map((group, i) =>
                 i === groupIdx
                     ? group.map((unit, j) => (j === unitIdx ? value : unit))
                     : group
             );
             setConditions(newConditions);
-        };
+
     };
 
     const removeUnitInput = (groupIdx, unitIdx) => {
@@ -199,7 +193,7 @@ function BooleanConditionsInput({conditions, setConditions}) {
 
     return (
         <div>
-            <div><b>Boolean Conditions:</b></div>
+            <div><b>Outcomes:</b></div>
             {conditions.map((group, groupIdx) => (
                 <div key={groupIdx} style={{marginBottom: 8, border: "1px solid #ccc", padding: 4}}>
                     <span>Group {groupIdx + 1} (AND): </span>
@@ -209,7 +203,7 @@ function BooleanConditionsInput({conditions, setConditions}) {
                                 type="text"
                                 value={unit}
                                 placeholder="Unit name"
-                                onChange={e => updateUnitInput(groupIdx, unitIdx, e.target.value)}
+                                onChange={e => updateUnitInput(groupIdx, unitIdx, e.target.value) }
                                 style={{marginRight: 4}}
                             />
                             <button onClick={() => removeUnitInput(groupIdx, unitIdx)}>-</button>
