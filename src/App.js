@@ -175,7 +175,6 @@ function ConditionInputs({cfg, setCfg, conditions, setConditions}) {
                     : group
             );
             setConditions(newConditions);
-
     };
 
     const removeUnitInput = (groupIdx, unitIdx) => {
@@ -203,7 +202,8 @@ function ConditionInputs({cfg, setCfg, conditions, setConditions}) {
                                 type="text"
                                 value={unit}
                                 placeholder="Unit name"
-                                onChange={e => updateUnitInput(groupIdx, unitIdx, e.target.value) }
+                                onChange={e => {updateUnitInput(groupIdx, unitIdx, e.target.value); handleNameUpdate(e, cfg, setCfg)}}
+                                
                                 style={{marginRight: 4}}
                             />
                             <button onClick={() => removeUnitInput(groupIdx, unitIdx)}>-</button>

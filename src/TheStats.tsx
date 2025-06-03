@@ -1,4 +1,4 @@
-import "./utilsSet13.js"
+import "./utilsSet14.js"
 //FILE PURPOSE: Very simple component to display the probabilities numerically at the bottom of the page
 
 function statLine(numSeen, probability){

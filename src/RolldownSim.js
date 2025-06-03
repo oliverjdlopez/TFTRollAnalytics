@@ -12,17 +12,16 @@ export default class RolldownSim {
     odds;
     targetNames;
     targetCosts;
-    targetNameEnum;
 
     constructor(cfg) {
         if (this.validInputs(cfg)) {
             this.initCfg = cfg
             this.setCfgFields(cfg)
             this.odds = levelOdds(this.level)
-            this.targetNames = Object.keys(this.targetNameEnum).filter(name => allNames.includes(name))
+            this.targetNames = cfg.targetNames.filter(name => allNames.includes(name))
+            
             this.targetCosts = this.targetNames.map(n => nameToCost(n))
-
-
+            console.log(this.targetNames, cfg.targetNames)
             this.shopDist = this.makeShopDist()
             this.bags = this.makeBags()
 
@@ -45,13 +44,14 @@ export default class RolldownSim {
     // Tests to make sure that inputs are within game confines. Returns bool
     validInputs(cfg) {
         // check game state inputs
+        const validNames = cfg.targetNames.map(name => allNames.includes(name))
         const validLevel = cfg.level >= 1 && cfg.level <= 10
         const validGold = cfg.gold >= 0
         const validGameState = validGold && validLevel
 
         // unit inputs
         const validOobUnit = []
-        for (let name of Object.keys(cfg.targetNameEnum)){
+        for (let name of validNames){
             validOobUnit.push(cfg.oobUnit >= 0 && cfg.oobUnit <= bagSize(cfg.cost)) // can only be as many units out of the bag as there are units in the bag
         }
 
@@ -61,7 +61,7 @@ export default class RolldownSim {
 
 
 
-        return true
+        return true // TODO: change to return actual validity check
     }
 
     setCfgFields(cfg){
@@ -71,7 +71,6 @@ export default class RolldownSim {
         this.gold = cfg.gold
         this.oobNonTarget = cfg.oobNonTarget
         this.oobTarget = cfg.oobTarget
-        this.targetNameEnum = cfg.targetNameEnum
 
     }
 
@@ -214,6 +213,8 @@ export default class RolldownSim {
 
 
     calcProbabilities() {
+        console.log(this.targetNames)
+        console.log(this.probs)
         for (let sim of this.sims){ //this.sims[i][name] is teh number of times in the i-th sim that corresponding unit was seen
             for (let name of this.targetNames){
                 const nFound = sim[name]
