@@ -37,6 +37,8 @@ export default function App() {
     const [results, setResults] = useState({}) //the results to graph, could be standard, cumulative, with bool conditions, etc.
     const [conditions, setConditions] = useState([[""]]) //boolean conditions for filtering
     // const
+
+    
     
     
     /* TODO: figure out if I want to keep this
@@ -93,7 +95,7 @@ export default function App() {
 
             
             
-            <button onClick={() => handleSimulate(cfg, setResults, setSim)}> Simulate</button>
+            <button onClick={() => handleSimulate(cfg, conditions, setResults, setSim)}> Simulate</button>
             <button onClick={() => handleClear(initCfg, setCfg, setResults)}> Clear</button>
             
             

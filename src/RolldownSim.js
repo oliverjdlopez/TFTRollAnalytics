@@ -13,24 +13,33 @@ export default class RolldownSim {
     targetNames;
     targetCosts;
 
-    constructor(cfg) {
-        if (this.validInputs(cfg)) {
+    constructor(cfg, conditions) {
+        if (this.validInputs(cfg, conditions)) {
             this.initCfg = cfg
             this.setCfgFields(cfg)
             this.odds = levelOdds(this.level)
             this.targetNames = cfg.targetNames.filter(name => allNames.includes(name))
             
             this.targetCosts = this.targetNames.map(n => nameToCost(n))
-            console.log(this.targetNames, cfg.targetNames)
             this.shopDist = this.makeShopDist()
             this.bags = this.makeBags()
 
-
+            
             this.initBags = {...this.bags} // for easier resetting later
             this.sims = new Array(this.nSims)
-            this.probs = {}
+            this.unitProbs = {}
             this.cumProbs = {}
-            this.targetNames.forEach(name => this.probs[name] = new Array(10).fill(0))
+
+            //init default values for prob dicts
+            this.targetNames.forEach(name => this.unitProbs[name] = new Array(10).fill(0))
+            this.targetNames.forEach(name => this.cumProbs[name] = new Array(10).fill(0))
+
+
+            this.conditions=conditions
+            this.conditionNames = this.conditions.map((c, i) => `Case ${i}`) // names for conditions
+            this.condProbs = {}
+            this.conditionNames.forEach(name => this.condProbs[name] = 0) // init condition probabilities to 0
+
         } else {
             this.handleInvalidInputs(cfg)
         }
@@ -42,7 +51,7 @@ export default class RolldownSim {
 
     // TODO: adapt to work with new  structure and arrays
     // Tests to make sure that inputs are within game confines. Returns bool
-    validInputs(cfg) {
+    validInputs(cfg, conditions) {
         // check game state inputs
         const validNames = cfg.targetNames.map(name => allNames.includes(name))
         const validLevel = cfg.level >= 1 && cfg.level <= 10
@@ -123,7 +132,7 @@ export default class RolldownSim {
             this.sims[i] = this.runOneSim()
             this.reset(this.initCfg)
         }
-        this.calcProbabilities()
+        this.calcUnitProbabilities()
     }
 
     makeShopDist(){
@@ -212,36 +221,78 @@ export default class RolldownSim {
     }
 
 
-    calcProbabilities() {
-        console.log(this.targetNames)
-        console.log(this.probs)
-        for (let sim of this.sims){ //this.sims[i][name] is teh number of times in the i-th sim that corresponding unit was seen
+
+    simSatisfiesCondition(sim, condition){
+        return true
+        //return condition.every(c => sim[c] > 0) // all units seen in the sim
+    }
+
+
+    
+    
+
+    // from the sims, calculate the raw number of counts for seeing each target unit
+    calcUnitProbabilities() {
+         for (let sim of this.sims){ //this.sims[i][name] is teh number of times in the i-th sim that corresponding unit was seen
             for (let name of this.targetNames){
                 const nFound = sim[name]
-                this.probs[name][nFound]++
+                this.unitProbs[name][nFound]++
             }
         }
 
         //normalize
         for(let name of this.targetNames){
-            this.probs[name] = this.probs[name].map(n => n/this.nSims)
+            this.unitProbs[name] = this.unitProbs[name].map(n => n/this.nSims)
         }
 
         // make cumulative probabilities from normalized probabilities
         for (let name of this.targetNames) {
-            this.cumProbs[name] = this.probs[name].reduce((acc, curr, i) => {
+            this.cumProbs[name] = this.unitProbs[name].reduce((acc, curr, i) => {
                 const sum = (acc[i - 1] || 0) + curr;
                 acc.push(sum);
                 return acc
             }, [])
         }
+    }
+    
+    
+
+
+
+    //LEFT OFF: trying to figure out how to return and format conditional probabilities. 
+    // The graph currently takes a dict of arrays, so I could just format it like that, and then with some adjusting of the TheChart.tsx, it should be easy enough
+    // However, before any of that, I need a concrete vision for how I want to graph, format, and think about conditional probabilities.
+    calcConditionProbabilities() {
+
+        for (let i=0; i<this.conditions.length; i++){
+            const condition = this.conditions[i]
+            const name = `Case ${i}`
+            this.condProbs[name] = 0
+            for (let sim of this.sims){ //this.sims[i][name] is teh number of times in the i-th sim that corresponding unit was seen
+                    if (this.simSatisfiesCondition(sim, condition)){
+                        this.condProbs[name]++
+                    }
+            }
+        }
+
+        //normalize
+        this.condProbs = this.condProbs.map(n => n/this.nSims)
+
 
     }
 
+
+
+
+
     //might seem unnecessary, but I think will eventually be helpful in the future for passing info along
     getResults(){
-        return {"probs": this.probs,
+        console.log("printing probs")
+        console.log(this.unitProbs)
+        console.log(this.condProbs)
+        return {"probs": this.unitProbs,
                 "cumProbs": this.cumProbs,
+                "condProbs": this.condProbs,
                 "sims": this.sims}
 
 

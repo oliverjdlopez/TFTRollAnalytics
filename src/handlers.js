@@ -15,9 +15,9 @@ export function handleNameUpdate(e, cfg, setCfg){
 export function handleAddTarget(cfg, setCfg){
     setCfg({...cfg, nTargets: (cfg.nTargets+1) })
 }
-export function handleSimulate(cfg, setResults, setSim){
+export function handleSimulate(cfg, conditions, setResults, setSim){
     console.log(cfg)
-    let sim = new RolldownSim(cfg)
+    let sim = new RolldownSim(cfg, conditions)
     sim.runAllSims()
     setSim(sim)
     setResults(sim.getResults())
