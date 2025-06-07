@@ -1,5 +1,5 @@
-import RolldownSim from "./RolldownSim";
-import {allNames} from "./utilsSet14.js";
+import RolldownSim from "../RolldownSim.js";
+import {allNames} from "../utilsSet14.js";
 
 export function handleNameUpdate(e, cfg, setCfg){
     const name = e.target.value

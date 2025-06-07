@@ -1,5 +1,5 @@
 import {Bar} from 'react-chartjs-2'
-import "./utilsSet14.js"
+import "../utilsSet14.js"
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -67,17 +67,17 @@ const colors = ['rgba(255, 0, 0, 0.5)', 'rgba(0, 0, 255, 0.5)', 'rgba(0, 255, 0,
 
 const nullData = { //empty chart data
     labels: labels,
-    datasets:[], 
+    datasets:[],
 }
 
 
-export default function TheChart({cfg, results}) {
+export default function UnitChart({cfg, results}) {
 
     if (Object.keys(results).length === 0){ // return blank chart if no results (i.e. sim not run yet)
         return <Bar options={options} data={nullData} className={"TheChart"}/>
     }
 
-    else { 
+    else {
         const probabilities = cfg.useCumProbs ? results.cumProbs : results.probs;
         const unitData = (Object.keys(probabilities)).map((k, i)=> // create a dataset for each unit name
             ({
@@ -88,10 +88,10 @@ export default function TheChart({cfg, results}) {
         const chartData = { // if no data, return empty dataset
             labels: labels, // labels are nums from 0 to 9
             datasets: unitData // each entry in chart data is unit name and corresponding probabilities
-        } 
-
-        return <Bar options={options} data={chartData} className={"TheChart"}/>
-    
         }
 
-    }  
+        return <Bar options={options} data={chartData} className={"TheChart"}/>
+
+    }
+
+}
